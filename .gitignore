@@ -1,0 +1,13 @@
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# Runtime identity materials and device captures
+identity/
+*.pk8
+*.p7b
+*.btsnoop

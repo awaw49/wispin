@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <WebView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="14dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_pill"
+            android:elevation="4dp"
+            android:paddingStart="14dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="9dp">
+
+            <View
+                android:id="@+id/statusDot"
+                android:layout_width="9dp"
+                android:layout_height="9dp" />
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="未连接"
+                android:textColor="@color/ink"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/datumToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pill"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="9dp"
+            android:text="高德"
+            android:textColor="@color/accent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_pill"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="9dp"
+            android:text="⚙"
+            android:textColor="@color/ink"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="@drawable/bg_sheet"
+        android:elevation="12dp"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="16dp">
+
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_grabber" />
+
+        <HorizontalScrollView
+            android:id="@+id/favoritesBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/favoritesContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_input"
+                android:padding="3dp">
+
+                <TextView
+                    android:id="@+id/segPoint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="单点"
+                    android:textColor="@color/ink"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/segPath"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="路径"
+                    android:textColor="@color/ink"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/favSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="☆"
+                android:textColor="@color/accent"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/favToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="收藏 ▾"
+                android:textColor="@color/accent"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/latEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:hint="纬度"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal|numberSigned"
+                android:padding="10dp"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/lonEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_input"
+                android:hint="经度"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal|numberSigned"
+                android:padding="10dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pathRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/pathSpeedEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:hint="速度 km/h"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/pathLoopCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="循环" />
+
+            <TextView
+                android:id="@+id/gpxButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="GPX"
+                android:textColor="@color/accent"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/undoRoute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="撤销"
+                android:textColor="@color/accent"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/clearRoute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="清空"
+                android:textColor="@color/err"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/infoLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="点击地图选择位置"
+            android:textColor="@color/muted"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/retryPermissions"
+            style="@style/SecondaryButton"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:text="申请权限 / 启动服务"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/ctaButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_primary"
+            android:text="开始定位"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/advancedOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="24dp"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/overlayScrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99000000"
+            android:clickable="true" />
+
+        <LinearLayout
+            android:id="@+id/overlaySheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="64dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_sheet"
+            android:elevation="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="18dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="更多选项"
+                    android:textColor="@color/ink"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/closeOverlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="✕"
+                    android:textColor="@color/muted"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="24dp">
+
+                    <!-- Device -->
+                    <LinearLayout style="@style/Card" android:orientation="vertical">
+                        <TextView style="@style/SectionTitle" android:text="设备" />
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <Spinner
+                                android:id="@+id/deviceSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                            <Button android:id="@+id/refreshDevices" style="@style/SecondaryButton" android:layout_width="wrap_content" android:text="刷新" />
+                        </LinearLayout>
+
+                        <Button android:id="@+id/bluetoothSettings" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_marginTop="8dp" android:text="系统蓝牙配对" />
+                    </LinearLayout>
+
+                    <!-- Params -->
+                    <LinearLayout style="@style/Card" android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/paramsHeader"
+                            style="@style/SectionTitle"
+                            android:clickable="true"
+                            android:text="定位参数 ▸" />
+
+                        <LinearLayout
+                            android:id="@+id/paramsBody"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/accuracyEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="精度 m" android:inputType="numberDecimal" />
+                                <EditText android:id="@+id/altEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:hint="高度 m" android:inputType="numberDecimal|numberSigned" />
+                                <EditText android:id="@+id/rateEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:hint="周期 ms" android:inputType="number" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/speedEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="速度 m/s" android:inputType="numberDecimal" />
+                                <EditText android:id="@+id/bearingEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:hint="航向 °" android:inputType="numberDecimal" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/qualityEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="质量 0-8" android:inputType="number" />
+                                <EditText android:id="@+id/satellitesEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:hint="卫星 0-99" android:inputType="number" />
+                            </LinearLayout>
+                            <EditText android:id="@+id/jitterEdit" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="坐标随机偏移 m（0 关闭）" android:inputType="numberDecimal" />
+                            <CheckBox android:id="@+id/jitterAccuracyCheck" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="随机精度（区间）" />
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/accuracyMinEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="精度最小" android:inputType="numberDecimal" />
+                                <EditText android:id="@+id/accuracyMaxEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:hint="精度最大" android:inputType="numberDecimal" />
+                            </LinearLayout>
+                            <CheckBox android:id="@+id/jitterAltitudeCheck" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="随机高度（区间）" />
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/altitudeMinEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="高度最小" android:inputType="numberDecimal|numberSigned" />
+                                <EditText android:id="@+id/altitudeMaxEdit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:hint="高度最大" android:inputType="numberDecimal|numberSigned" />
+                            </LinearLayout>
+                            <Button android:id="@+id/applyParams" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_marginTop="4dp" android:text="应用参数" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Identity -->
+                    <LinearLayout style="@style/Card" android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/identityHeader"
+                            style="@style/SectionTitle"
+                            android:clickable="true"
+                            android:text="配件身份与 MFi ▸" />
+
+                        <LinearLayout
+                            android:id="@+id/identityBody"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView android:id="@+id/identityInfo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="身份未加载" android:textColor="@color/muted" />
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <Button android:id="@+id/importKey" style="@style/SecondaryButton" android:layout_width="0dp" android:layout_weight="1" android:text="导入 identity.pk8" />
+                                <Button android:id="@+id/importCert" style="@style/SecondaryButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="8dp" android:text="导入 certificate.p7b" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <Button android:id="@+id/editProfile" style="@style/SecondaryButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginTop="8dp" android:text="编辑配件身份" />
+                                <Button android:id="@+id/inspectIdentity" style="@style/SecondaryButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="8dp" android:layout_marginTop="8dp" android:text="检查 MFi 身份" />
+                            </LinearLayout>
+                            <Button android:id="@+id/rotateIdentity" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_marginTop="8dp" android:text="轮换配件身份" />
+                            <CheckBox android:id="@+id/randomIdentityCheck" android:layout_width="match_parent" android:layout_height="wrap_content" android:checked="true" android:text="每次启动自动轮换配件身份" />
+                            <CheckBox android:id="@+id/randomAdapterCheck" android:layout_width="match_parent" android:layout_height="wrap_content" android:checked="true" android:text="上报随机蓝牙地址" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

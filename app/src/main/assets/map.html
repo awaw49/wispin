@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://*.is.autonavi.com; frame-src 'none'; object-src 'none'; connect-src 'none'" />
+<link rel="stylesheet" href="leaflet/leaflet.css" />
+<style>
+html, body, #map { margin: 0; height: 100%; width: 100%; font-family: sans-serif; }
+.waypoint { display: grid; place-items: center; width: 24px; height: 24px; border: 2px solid white;
+  border-radius: 50%; color: white; background: #155e75; box-shadow: 0 1px 4px #555; font-weight: bold; }
+.pin { display: block; width: 18px; height: 18px; border: 3px solid white; border-radius: 50%;
+  background: #2563eb; box-shadow: 0 1px 6px rgba(0,0,0,.4); }
+#failure { position: absolute; z-index: 1000; top: 8px; left: 8px; padding: 8px; background: white; color: #a00; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="failure" hidden></div>
+<script src="leaflet/leaflet.js"></script>
+<script>
+'use strict';
+const ROUTE_COLOR = '#155e75';
+const FIT_PADDING = 32;
+const MAX_FIT_ZOOM = 15;
+let map, osm, amap, markers, polyline, pathMode, loopClosed, displayedDatum;
+let firstRender = true;
+
+function reportError(message) {
+  const label = document.getElementById('failure');
+  label.hidden = false;
+  label.textContent = message;
+  if (window.AndroidMap) AndroidMap.onError(message);
+}
+window.addEventListener('error', event => reportError(event.message || '地图脚本加载失败'));
+window.addEventListener('unhandledrejection', event => reportError(String(event.reason)));
+
+function init(lat, lon, zoom) {
+  if (map) throw new Error('地图重复初始化');
+  map = L.map('map', {zoomControl: false}).setView([lat, lon], zoom);
+  markers = L.layerGroup().addTo(map);
+  osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '&copy; OpenStreetMap'
+  });
+  amap = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+    subdomains: '1234', maxZoom: 18, attribution: '&copy; 高德地图'
+  });
+  osm.on('tileerror', () => AndroidMap.onTileError('OpenStreetMap 网络或服务错误'));
+  amap.on('tileerror', () => AndroidMap.onTileError('高德地图网络或服务错误'));
+  map.on('click', event => AndroidMap.onPick(event.latlng.lat, event.latlng.lng));
+  AndroidMap.onReady();
+}
+
+function setPathMode(on) {
+  pathMode = !!on;
+}
+
+function setLoopClosed(on) {
+  loopClosed = !!on;
+}
+
+function center(lat, lon) {
+  if (map) map.setView([lat, lon], map.getZoom());
+}
+
+function setDatum(datum) {
+  const active = datum === 'gcj' ? amap : osm;
+  const inactive = datum === 'gcj' ? osm : amap;
+  if (map.hasLayer(inactive)) map.removeLayer(inactive);
+  if (!map.hasLayer(active)) active.addTo(map);
+}
+
+function renderRoute(points, datum) {
+  setDatum(datum);
+  markers.clearLayers();
+  if (polyline) map.removeLayer(polyline);
+  polyline = null;
+  points.forEach(addMarker);
+  let positions = points.map(point => [point.lat, point.lon]);
+  if (pathMode && positions.length > 1) {
+    if (loopClosed && positions.length > 2) positions = positions.concat([positions[0]]);
+    polyline = L.polyline(positions, {color: ROUTE_COLOR}).addTo(map);
+  }
+  if (positions.length && (firstRender || datum !== displayedDatum)) {
+    map.fitBounds(L.latLngBounds(positions), {
+      padding: [FIT_PADDING, FIT_PADDING], maxZoom: MAX_FIT_ZOOM
+    });
+  }
+  firstRender = false;
+  displayedDatum = datum;
+}
+
+function addMarker(point, index) {
+  const html = pathMode
+    ? '<span class="waypoint">' + (index + 1) + '</span>'
+    : '<span class="pin"></span>';
+  const marker = L.marker([point.lat, point.lon], {
+    draggable: true,
+    icon: L.divIcon({className: '', html: html, iconSize: [24, 24], iconAnchor: [12, 12]})
+  }).addTo(markers);
+  marker.on('dragend', () => {
+    const position = marker.getLatLng();
+    AndroidMap.onMove(index, position.lat, position.lng);
+  });
+  if (!pathMode) return;
+  const remove = document.createElement('button');
+  remove.textContent = '删除第 ' + (index + 1) + ' 个点';
+  remove.addEventListener('click', () => AndroidMap.onDelete(index));
+  marker.bindPopup(remove);
+  marker.on('contextmenu', () => AndroidMap.onDelete(index));
+}
+</script>
+</body>
+</html>
