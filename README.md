@@ -6,6 +6,10 @@ An iOS location changer for Android. Wispin makes your Android phone act as an
 MFi GPS accessory and pushes NMEA location fixes to your iPhone over Bluetooth —
 no jailbreak, no cable, no desktop computer.
 
+中文简介：让 Android 手机模拟 MFi GPS 配件，通过蓝牙（iAP2）向 iPhone 推送
+虚拟定位——覆盖常见的「改定位 / 定位修改 / 定位模拟」需求，iPhone
+无需越狱、无需连接电脑。详见 [中文 README](README.zh.md)。
+
 > [!IMPORTANT]
 > **iOS 26 and later**: Apple changed location fusion and caching. After
 > connecting, you must [refresh the location cache](#refresh-the-location-cache-on-ios)
